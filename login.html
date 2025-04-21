@@ -22,6 +22,11 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Entrar</button>
                 </form>
+                <!-- Botões para navegação -->
+                <div class="mt-4">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">Voltar para Home</button>
+                    <button class="btn btn-info" onclick="window.location.href='cadastro.html'">Ir para Cadastro</button>
+                </div>
             </div>
         </div>
     </div>
@@ -30,46 +35,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
     <script>
-        // Criando a instância do Supabase com nome de variável alterado para "supabaseClient"
-        const supabaseUrl = 'https://woywqncdfuyworcbjjlv.supabase.co'; // Seu URL do Supabase
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndveXdxbmNkZnV5d29yY2Jqamx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwMTUyNzgsImV4cCI6MjA2MDU5MTI3OH0.o63pZx8l8oe1aEYKEaYVQyHgEvR5FGkfAygTLTvWWVA'; // Sua chave de API do Supabase
+        const supabaseUrl = 'https://woywqncdfuyworcbjjlv.supabase.co'; // URL do Supabase
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndveXdxbmNkZnV5d29yY2Jqamx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwMTUyNzgsImV4cCI6MjA2MDU5MTI3OH0.o63pZx8l8oe1aEYKEaYVQyHgEvR5FGkfAygTLTvWWVA'; // Chave API
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Função de login
         document.getElementById('login-form').addEventListener('submit', async function (e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            console.log("Tentando login...");
-            console.log("Usuário:", username);
-            console.log("Senha:", password);
-
-            // Se o usuário for o Admin
+            // Admin Login
             if (username === 'Admin' && password === '1234') {
-                console.log("Login Admin realizado com sucesso.");
-                // Redireciona para a tela de Cadastro de Usuários
-                window.location.href = 'cadastro.html'; 
+                window.location.href = 'cadastro.html'; // Redireciona para Cadastro
             } else {
-                console.log("Tentando verificar no Supabase...");
-
-                // Caso contrário, tenta fazer login com o Supabase
+                // Verifica no Supabase
                 const { data, error } = await supabaseClient
                     .from('users')
                     .select('*')
                     .eq('username', username)
                     .eq('password', password);
 
-                // Se houver um erro, exibe o erro
                 if (error) {
-                    console.error("Erro ao fazer login:", error.message);
                     alert("Erro ao fazer login: " + error.message);
                 } else if (data.length > 0) {
-                    // Se encontrado, redireciona para a tela do RH
-                    console.log("Usuário encontrado. Redirecionando para o RH.");
-                    window.location.href = 'rh.html'; // Tela do RH
+                    window.location.href = 'rh.html'; // Redireciona para página do RH
                 } else {
-                    console.log("Usuário ou senha inválidos.");
                     alert("Usuário ou senha inválidos.");
                 }
             }
